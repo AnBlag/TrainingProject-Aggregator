@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Медузер</title></head>
+<body>
+<nav th:fragment="header" class="navbar navbar-expand-md navbar navbar-dark bg-dark fixed-top"
+     style="background-color: #e3f2fd;">
+    <div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" class="bi bi-lightning-fill"
+             viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7
+        9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5z"/></svg>
+        <a class="navbar-brand ml-4" href="/meduza/news">Медузер</a>
+    </div>
+
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link ml-2" href="/meduza/news">Домой</a>
+        </li>
+        <!--<li class="nav-item">
+            <a class="nav-link ml-2" href="/">Тест</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link ml-2" href="/">Тест</a>
+        </li>-->
+    </ul>
+    </div>
+    <div>
+        <a class="btn btn-secondary" href="/auth/login" role="button">Sign in</a>
+    </div>
+    <div >
+        <a class="btn btn-secondary ml-2" href="/auth/logout" role="button">Logout</a>
+    </div>
+</nav>
+</body>
+</html>
