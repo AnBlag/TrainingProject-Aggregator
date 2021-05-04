@@ -60,6 +60,4 @@ public class NewsController {
             return "redirect:/meduza/news?page=" + atomicInteger.get();
         }
     }
-
-
 }

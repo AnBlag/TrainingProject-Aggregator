@@ -28,7 +28,7 @@ public class RestNewsApiController {
     }
 
     @GetMapping(value = "/news", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ContentList news(@RequestParam(value = "page", required = false, defaultValue = "0") String page) throws JsonProcessingException {
+    public ContentList news(@RequestParam(value = "page", required = false, defaultValue = "0") String page) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder
                 .append("https://meduza.io/api/v3/search?chrono=news&locale=ru&page=")

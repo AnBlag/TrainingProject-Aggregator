@@ -15,7 +15,6 @@
 <div th:replace="header :: header"></div>
 
 <main role="main" class="p-5 container">
-
     <table class="table table-hover">
         <thead>
         <tr>
@@ -33,12 +32,33 @@
             <td>
                 <img class="img-fluid" th:src="${(content.getShareImageUrl() == null) ? '': content.getShareImageUrl()}"/>
             </td>
-
     </table>
+
+    <!--<div align="center">
+        <div id="centerOne">
+            <form action="#" data-th-action="@{/meduza/button}" method="post">
+                <button type="submit" class="btn btn-success" name="previous" value="previous">Назад</button>
+                <button type="submit" class="btn btn-success" name="next" value="next">Вперед</button>
+            </form>
+        </div>
+    </div>-->
+
     <form action="#" data-th-action="@{/meduza/button}" method="post">
-        <button type="submit"  class="btn btn-success" name="previous" value="previous">previous</button>
-        <button type="submit" class="btn btn-success" name="next" value="next">next</button>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled" value="previous">
+                <a type="submit" class="page-link" href="#" tabindex="previous" aria-disabled="true">Назад</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a type="submit" class="page-link" href="#" tabindex="next">Вперед</a>
+            </li>
+        </ul>
+    </nav>
     </form>
+
 </main>
 
 
