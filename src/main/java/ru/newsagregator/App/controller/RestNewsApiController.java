@@ -1,12 +1,9 @@
 package ru.newsagregator.App.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import lombok.SneakyThrows;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +18,9 @@ import java.util.List;
 @RestController
 public class RestNewsApiController {
 
-    private final String url = "https://meduza.io/api/v3/search?chrono=news&locale=ru&page=0&per_page=24";
-
+    // добавить value
+    private String urlPartOne;
+    private String urlPartTwo;
     private final ContentMapper contentMapper;
 
     public RestNewsApiController(ContentMapper contentMapper) {
@@ -31,25 +29,29 @@ public class RestNewsApiController {
 
     @GetMapping(value = "/news", produces = MediaType.APPLICATION_JSON_VALUE)
     public ContentList news(@RequestParam(value = "page", required = false, defaultValue = "0") String page) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder
+        String url = createUrl(urlPartOne, urlPartTwo, page);
+        String responseJson = getContentJsonFromMeduzaApi(url);
+        MeduzaNews meduzaNews = stringToJsonMeduza(responseJson);
+        List<NewsContent> content = contentMapper.toDTO(meduzaNews);
+        return new ContentList(content);
+    }
+
+    private String createUrl(String urlPartOne, String urlPartTwo, String page) {
+     return new StringBuilder()
                 .append("https://meduza.io/api/v3/search?chrono=news&locale=ru&page=")
                 .append(page)
-                .append("&per_page=24");
-        String url = stringBuilder.toString();
-        WebClient webClient = WebClient.create();
-        String responseJson = webClient.get()
+                .append("&per_page=24").toString();
+    }
+
+    private String getContentJsonFromMeduzaApi(String url) {
+       return WebClient.create().get()
                 .uri(url)
                 .exchange()
                 .block()
                 .bodyToMono(String.class)
                 .block();
-
-
-        MeduzaNews meduzaNews = stringToJsonMeduza(responseJson);
-        List<NewsContent> content = contentMapper.toDTO(meduzaNews);
-        return new ContentList(content);
     }
+
 
     @SneakyThrows
     private MeduzaNews stringToJsonMeduza(String text) {
