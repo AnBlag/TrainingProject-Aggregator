@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Controller
 @RequestMapping("/meduza")
 public class NewsController {
+    //сделать value
     private final String url = "http://localhost:8080/news";
     private final AtomicInteger atomicInteger;
 
@@ -24,26 +25,29 @@ public class NewsController {
     @GetMapping("/news")
     public String getNews(@RequestParam(value = "page", defaultValue = "0", required = false)
                                       String page, ModelMap modelMap) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder
-                .append(url)
-                .append("?page=")
-                .append(page);
-
-        String url = stringBuilder.toString();
-        WebClient webClient = WebClient.create();
-        ContentList responseJson = webClient.get()
-                .uri(url)
-                .exchange()
-                .block()
-                .bodyToMono(ContentList.class)
-                .block();
-
+        String url = createUrl(this.url,page);
+        ContentList responseJson = getContentJsonFromRestNewsApiController(url);
         assert responseJson != null;
         List<NewsContent> newsContentList = responseJson.getNewsContent();
         modelMap.addAttribute("newsContentList", newsContentList);
 
         return "news";
+    }
+
+    private String createUrl(String url, String pageNumber) {
+        return new StringBuilder()
+                .append(url)
+                .append("?page=")
+                .append(pageNumber).toString();
+    }
+    private ContentList getContentJsonFromRestNewsApiController(String url) {
+        WebClient webClient = WebClient.create();
+       return webClient.get()
+                .uri(url)
+                .exchange()
+                .block()
+                .bodyToMono(ContentList.class)
+                .block();
     }
 
     @PostMapping("/button")
